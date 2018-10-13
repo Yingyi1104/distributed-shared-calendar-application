@@ -1,8 +1,5 @@
-#assumption:  knownhosts_udp file is always Valid
-#All the participants of the meeting I scheduled must in knownhosts_udp?
+#TODO run.sh & build.sh
 
-
-#TODO insert cancel 更新 timetable
 from socket import *
 import threading
 import os
@@ -15,7 +12,7 @@ def send_msg_to_participants(my_store, participants, this_site_id, sock, nodes):
     for participant in participants:
         if participant == this_site_id:
             continue
-        print("Need to send:",participant)
+        # print("Need to send:",participant)
         msg = my_store.get_info_to_send(participant)
         msg = pickle.dumps(msg)
         sock.sendto(msg,(nodes[participant]["ip"],nodes[participant]["port"]))
@@ -24,15 +21,13 @@ def send_msg_to_participants(my_store, participants, this_site_id, sock, nodes):
 def listen_to_other_sites(sock, nodes, this_site_id):
     while True:
         data, address = sock.recvfrom(4096)
-        print("received info from address!",address)
+        # print("received info from address!",address)
         data = pickle.loads(data)
         for node_name in nodes:
             if nodes[node_name]["ip"] == address[0]:
                 address = node_name
         participants = my_store.update(data,address)
-        print("My paritcipants",participants)
         if len(participants) <= 1:
-            print("my partcipants:", participants)
             continue
         send_msg_to_participants(my_store, participants, this_site_id, sock, nodes)
 
@@ -84,16 +79,15 @@ listening_thread.start()
 
 #Say your order!
 while True:
-    print("What do you want to do, YINGYI?")
+    print("What do you want to do, Pingping?")
     get_order = input("")
     information_from_order = get_order.strip().split(" ")
     if information_from_order[0] == "schedule":
         if not my_store.insert(information_from_order[1:]):
-            print("IT is not right")
             continue
         participants = my_store.sites_involved_in_meeting(information_from_order[1])
         if len(participants) <= 1:
-            print("Only one participants:",participants)
+            # print("Only one participants:",participants)
             continue
         send_msg_to_participants(my_store, participants, this_site_id, sock, nodes)
 
@@ -102,7 +96,9 @@ while True:
         if len(participants) == 0:
             print("Can't cancel! Not found in dictionary")
             continue        
-        my_store.delete(information_from_order[1:])
+        if not my_store.delete(information_from_order[1:]):
+            print("Cannot cancel! this site not involved the meeting!")
+            continue
         if len(participants) == 1:
             continue
         send_msg_to_participants(my_store, participants, this_site_id, sock, nodes)

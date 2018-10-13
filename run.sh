@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
 # Run my program.
-python3 host.py $1
+python3 host.py
 
 exit 0

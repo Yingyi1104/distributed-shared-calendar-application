@@ -1,17 +1,9 @@
 from datetime import *
 def parse_time(time_string):
     #split hour, minutes, and merediem from string
-    hour_minutes = time_string[:-2].split(":")
-    meridiem = time_string[-2:]
+    hour_minutes = time_string.split(":")
     hour = int(hour_minutes[0])
     minutes = int(hour_minutes[1])
-
-    if meridiem == "pm":
-        hour += 11
-        minutes += 15
-
-    if meridiem == "am":
-        hour %= 12
 
     #return time object
     timeobj = time(hour, minutes)
