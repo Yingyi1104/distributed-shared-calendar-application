@@ -79,7 +79,7 @@ listening_thread.start()
 
 #Say your order!
 while True:
-    print("What do you want to do, Pingping?")
+    print("What do you want to do, ",this_site_id," ?")
     get_order = input("")
     information_from_order = get_order.strip().split(" ")
     if information_from_order[0] == "schedule":
@@ -102,8 +102,6 @@ while True:
         if len(participants) == 1:
             continue
         send_msg_to_participants(my_store, participants, this_site_id, sock, nodes)
-
-        print("Cancel "+information_from_order[1] + "Successfully")
     elif information_from_order[0] == "view":
         my_store.print_view()
     elif information_from_order[0] == "myview":

@@ -28,7 +28,7 @@ class SharedCalendar(object):
     def insert(self, information_from_order):
         meeting_name = information_from_order[0]
         if self.find_meeting_in_dictionary(meeting_name):
-            print("Can't schedule! Has same name!")
+            print("Unable to schedule meeting: Same name ", meeting_name)
             return False
 
 
@@ -41,8 +41,8 @@ class SharedCalendar(object):
 
         current_meeting = Meeting(meeting_name, day, start_time, end_time, participants)
         for meeting in self.dictionary:
-            if meeting.is_conflict(current_meeting,self.site_id):
-                print("Unable to schedule meeting ", meeting_name)
+            if meeting.is_conflict(current_meeting,None):
+                print("Unable to schedule meeting: has conflicts", meeting_name)
                 return False
         self.dictionary.append(current_meeting)
         self.site_timestamp += 1
@@ -63,7 +63,7 @@ class SharedCalendar(object):
         if self.site_id not in target_meeting.participants:
             return False
         self.site_timestamp += 1
-        current_event = Event("cancel", target_meeting,self.site_timestamp,self.site_id)
+        current_event = Event("delete", target_meeting,self.site_timestamp,self.site_id)
         self.log.append(current_event)
         self.dictionary.remove(target_meeting)
         self.time_table[self.site_id_to_index[self.site_id]][self.site_id_to_index[self.site_id]] = self.site_timestamp
@@ -92,7 +92,7 @@ class SharedCalendar(object):
                 self.time_table[index1][index2] = max(self.time_table[index1][index2], other_timetable[index1][index2])
         for record in NE:
             self.log.append(record)
-            if record.operating_type == "cancel":
+            if record.operating_type == "delete":
                 for meeting in self.dictionary:
                     if record.meeting == meeting:
                         self.dictionary.remove(record.meeting)
@@ -100,7 +100,7 @@ class SharedCalendar(object):
             elif record.operating_type == "create":
                 is_delete = False
                 for record2 in NE:
-                    if record2.operating_type == "cancel" and record2.meeting == record.meeting:
+                    if record2.operating_type == "delete" and record2.meeting == record.meeting:
                         is_delete = True
                 if is_delete:
                     continue
@@ -109,7 +109,7 @@ class SharedCalendar(object):
                     if meeting.is_conflict(record.meeting,self.site_id):
                         flag = True
                         for record2 in NE:
-                            if record2.operating_type == "cancel" and record2.meeting == meeting:
+                            if record2.operating_type == "delete" and record2.meeting == meeting:
                                 flag = False
                         if flag:
                             conflicts_meeting.append(meeting)
@@ -118,21 +118,15 @@ class SharedCalendar(object):
                 if len(conflicts_meeting) == 1:
                     self.dictionary.append(record.meeting)
                 elif len(conflicts_meeting) > 2 or conflicts_meeting[1] == record.meeting:
-                    if self.site_id not in record.meeting.participants:
-                        print("Cannot cancel the meeting",record.meeting.name , ", I do not participant it!")
-                        continue
                     self.site_timestamp += 1
-                    current_event = Event("cancel", record.meeting,self.site_timestamp,self.site_id)
+                    current_event = Event("delete", record.meeting,self.site_timestamp,self.site_id)
                     self.log.append(current_event)
                     self.time_table[self.site_id_to_index[self.site_id]][self.site_id_to_index[self.site_id]] = self.site_timestamp
                     sides_involved_in_canceled_meetings.extend(record.meeting.participants)
                     print("Meeting ",record.meeting.name," cancelled.")
                 else:
-                    if self.site_id not in conflicts_meeting[1].participants:
-                        print("Cannot cancel the meeting",conflicts_meeting[1].name , ", I do not participant it!")
-                        continue
                     self.site_timestamp += 1
-                    current_event = Event("cancel", conflicts_meeting[1],self.site_timestamp,self.site_id)
+                    current_event = Event("delete", conflicts_meeting[1],self.site_timestamp,self.site_id)
                     self.log.append(current_event)
                     self.time_table[self.site_id_to_index[self.site_id]][self.site_id_to_index[self.site_id]] = self.site_timestamp
                     self.dictionary.remove(conflicts_meeting[1])

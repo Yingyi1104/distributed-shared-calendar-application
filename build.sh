@@ -8,7 +8,7 @@ mkdir bin
 
 
 # copy python files from src to bin
-cp -R src/  bin/
+cp -R src/*  bin/
 
 
 cp run.sh bin/

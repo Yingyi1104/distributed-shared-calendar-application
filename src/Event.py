@@ -11,7 +11,11 @@ class Meeting(object):
     def is_conflict(self, new_meeting,site_id):
         if self.date != new_meeting.date:
             return False
-        if not site_id in self.participants or not site_id in new_meeting.participants:
+        if site_id and ((not site_id in self.participants) or (not site_id in new_meeting.participants)):
+            print(site_id)
+            return False
+        
+        if len(set(self.participants) & set(new_meeting.participants)) == 0:
             return False
         time_list = []
         time_list.append(parse_time(self.start))
