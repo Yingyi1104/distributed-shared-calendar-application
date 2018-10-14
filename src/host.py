@@ -46,7 +46,6 @@ with open('knownhosts_udp.txt', 'r') as udp_sites_file:
 
 #get ID of this site
 this_site_id = sys.argv[1]
-print(this_site_id)
 
 
 #create store of this site, class SharedCalendar is in SharedCalendar.py
@@ -79,7 +78,7 @@ listening_thread.start()
 
 #Say your order!
 while True:
-    print("What do you want to do, ",this_site_id," ?")
+    #print("What do you want to do, ",this_site_id," ?")
     get_order = input("")
     information_from_order = get_order.strip().split(" ")
     if information_from_order[0] == "schedule":

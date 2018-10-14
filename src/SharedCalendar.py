@@ -28,7 +28,7 @@ class SharedCalendar(object):
     def insert(self, information_from_order):
         meeting_name = information_from_order[0]
         if self.find_meeting_in_dictionary(meeting_name):
-            print("Unable to schedule meeting: Same name ", meeting_name)
+            print("Unable to schedule meeting: Same name ")
             return False
 
 
@@ -42,7 +42,7 @@ class SharedCalendar(object):
         current_meeting = Meeting(meeting_name, day, start_time, end_time, participants)
         for meeting in self.dictionary:
             if meeting.is_conflict(current_meeting,None):
-                print("Unable to schedule meeting: has conflicts", meeting_name)
+                print("Unable to schedule meeting: has conflicts with", meeting_name)
                 return False
         self.dictionary.append(current_meeting)
         self.site_timestamp += 1
@@ -50,7 +50,7 @@ class SharedCalendar(object):
         self.log.append(current_event)
         self.time_table[self.site_id_to_index[self.site_id]][self.site_id_to_index[self.site_id]] = self.site_timestamp
         self.record()
-        print("Meeting ",meeting_name," scheduled.")
+        print("Meeting",meeting_name,"scheduled.")
         return True
 
 
@@ -68,7 +68,7 @@ class SharedCalendar(object):
         self.dictionary.remove(target_meeting)
         self.time_table[self.site_id_to_index[self.site_id]][self.site_id_to_index[self.site_id]] = self.site_timestamp
         self.record()
-        print("Meeting ",meeting_name," cancelled.")
+        print("Meeting",meeting_name,"cancelled.")
         return True
         
         
@@ -123,7 +123,7 @@ class SharedCalendar(object):
                     self.log.append(current_event)
                     self.time_table[self.site_id_to_index[self.site_id]][self.site_id_to_index[self.site_id]] = self.site_timestamp
                     sides_involved_in_canceled_meetings.extend(record.meeting.participants)
-                    print("Meeting ",record.meeting.name," cancelled.")
+                    print("Meeting",record.meeting.name,"cancelled.")
                 else:
                     self.site_timestamp += 1
                     current_event = Event("delete", conflicts_meeting[1],self.site_timestamp,self.site_id)
@@ -132,7 +132,7 @@ class SharedCalendar(object):
                     self.dictionary.remove(conflicts_meeting[1])
                     self.dictionary.append(record.meeting)
                     sides_involved_in_canceled_meetings.extend(conflicts_meeting[1].participants)
-                    print("Meeting ",conflicts_meeting[1].name," cancelled.")
+                    print("Meeting",conflicts_meeting[1].name,"cancelled.")
         self.dictionary.sort()
 
         #Truncate logs and reduce message sizes

@@ -30,14 +30,12 @@ class Meeting(object):
             return True
         return False
 
-    # 重定义小于比较
     def __lt__(self, other):
         return self.date < other.date \
             or (self.date == other.date and self.start < other.start) \
             or (self.date == other.date and self.start == other.start \
                 and self.name < other.name)
   
-  # 重定义等于比较
     def __eq__(self, other):
         return self.date == other.date and self.start == other.start \
                 and self.name == other.name
