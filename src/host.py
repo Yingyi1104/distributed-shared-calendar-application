@@ -6,7 +6,7 @@ import os
 from SharedCalendar import *
 from Event import *
 import pickle
-
+import sys
 
 def send_msg_to_participants(my_store, participants, this_site_id, sock, nodes):
     for participant in participants:
@@ -45,8 +45,8 @@ with open('knownhosts_udp.txt', 'r') as udp_sites_file:
         nodes[host_name_and_port[0]] = current_site
 
 #get ID of this site
-print("Plz import id of this site:  ")
-this_site_id = input("")
+this_site_id = sys.argv[1]
+print(this_site_id)
 
 
 #create store of this site, class SharedCalendar is in SharedCalendar.py
