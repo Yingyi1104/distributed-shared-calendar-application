@@ -78,7 +78,7 @@ listening_thread.start()
 
 #Say your order!
 while True:
-    #print("What do you want to do, ",this_site_id," ?")
+    print("What do you want to do, ",this_site_id," ?")
     get_order = input("")
     information_from_order = get_order.strip().split(" ")
     if information_from_order[0] == "schedule":
