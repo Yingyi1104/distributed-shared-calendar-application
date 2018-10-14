@@ -178,9 +178,9 @@ class SharedCalendar(object):
     def print_log(self):
         for event in self.log:
             if event.operating_type == "create":
-                print(event.operating_type +" "+ event.meeting.name +" "+event.meeting.start +" "+ event.meeting.date +" "+event.meeting.start + " "+event.meeting.end +" "+ ",".join(event.meeting.participants))
+                print(event.operating_type +" "+ event.meeting.name +" "+event.meeting.start +" "+ event.meeting.date +" "+event.meeting.start + " "+event.meeting.end +" "+ ",".join(event.meeting.participants)+" from "+ event.site_id, event.site_timestamp)
             else:
-                print(event.operating_type +" "+ event.meeting.name)
+                print(event.operating_type +" "+ event.meeting.name+" from "+ event.site_id, event.site_timestamp)
 
     def print_time(self):
         print(self.time_table)

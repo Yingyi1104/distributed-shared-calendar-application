@@ -12,7 +12,6 @@ class Meeting(object):
         if self.date != new_meeting.date:
             return False
         if site_id and ((not site_id in self.participants) or (not site_id in new_meeting.participants)):
-            print(site_id)
             return False
         
         if len(set(self.participants) & set(new_meeting.participants)) == 0:
