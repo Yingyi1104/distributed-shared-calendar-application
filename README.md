@@ -36,4 +36,4 @@ To recover a crashed site, the system detects three text files in the host.py, r
 Due to a problem with this algorithm, we will deal with some embarrassing situations. Sometimes the information received will conflict with the local calendar of this site. In this case, the site must cancel some of the meetings. Here are a few rules that deal with this type of problem.
 1. Each site only checks for conflicts related to itself.
 2. If there are conflicts between two meetings, the meeting with the name that is lexicographically second should be cancelled.
-3 If there is a meeting which is just received conflicts multiple local meetings, this site will delete as few meetings as possible to avoid conflicts.
+3. If there is a meeting which is just received conflicts multiple local meetings, this site will delete as few meetings as possible to avoid conflicts.
